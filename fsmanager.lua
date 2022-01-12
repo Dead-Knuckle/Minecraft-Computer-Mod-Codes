@@ -1,3 +1,6 @@
+--This is a file system manager, made by 123yeah_boi321, and I hope you can make good use of it! It acts as a way to browse through all your files on a computer, edit them, and run them
+--It, in it's current version, requires an advanced monitor and speaker to be attached to the computer, but I am working on optionality for both the speaker and monitor.
+
 --This is how you can use the program, run it to open the file explorer:
 --
 --require("disk.ssmanager")
