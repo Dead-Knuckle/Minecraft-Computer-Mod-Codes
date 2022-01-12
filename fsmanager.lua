@@ -5,6 +5,8 @@
 --
 --require("ssmanager")
 --fsm.main(false,"","")
+
+--and put this at the end if you want to keep it open
 --os.run({},"thisprogramsname")
 
 
