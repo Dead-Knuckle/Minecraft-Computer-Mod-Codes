@@ -3,7 +3,7 @@
 
 --This is how you can use the program, run it to open the file explorer:
 --
---require("disk.ssmanager")
+--require("ssmanager")
 --fsm.main(false,"","")
 --os.run({},"thisprogramsname")
 
