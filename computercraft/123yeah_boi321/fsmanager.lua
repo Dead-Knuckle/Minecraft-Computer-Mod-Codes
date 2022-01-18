@@ -14,7 +14,7 @@ m = peripheral.find("monitor")
 if peripheral.find("speaker") then
     s = peripheral.find("speaker")
 end
-ssm = {}
+fsm = {}
 
 function fsm.readDir(disk,name)
     print("reading inputed directory")
