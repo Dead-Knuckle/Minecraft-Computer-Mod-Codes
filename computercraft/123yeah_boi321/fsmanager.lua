@@ -110,7 +110,7 @@ end
 
 function fsm.main(isOnDisk,directory,first)
 	print("This is 123yeah_boi321's file reader and selection system, that he made for his own uses, and gives to you to use as well")
-	if peripheral.find("monitor")
+	if peripheral.find("monitor") then
 		m = peripheral.find("monitor")
 	else
 		m = window.create(term.current(),1,1,20,5)
