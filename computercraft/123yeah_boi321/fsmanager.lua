@@ -3,16 +3,15 @@
 
 --This is how you can use the program, run it to open the file explorer:
 --
---require("disk.ssmanager")
+--local fsm = require("fsmanager")
 --fsm.main(false,"","")
---os.run({},"thisprogramsname")
 
 
 m = peripheral.find("monitor")
 if peripheral.find("speaker") then
     s = peripheral.find("speaker")
 end
-fsm = {}
+local fsm = {}
 
 function fsm.readDir(disk,name)
 	if disk == true then
@@ -126,6 +125,7 @@ function fsm.main(isOnDisk,directory,first)
 			else
 				local id = shell.openTab(dirName.."/"..list[cheese])
 				shell.switchTab(id)
+				fsm.main(isOnDisk,directory,first)
 			end
 			break
 		elseif n == "edit" then
@@ -142,6 +142,7 @@ function fsm.main(isOnDisk,directory,first)
 				burger = true
 			end
 	    end
-		term.clear()
 	end
 end
+
+return fsm
