@@ -1,5 +1,6 @@
---This is a file system manager, made by 123yeah_boi321, and I hope you can make good use of it! It acts as a way to browse through all your files on a computer, edit them, and run them
---It, in it's current version, requires an advanced monitor and speaker to be attached to the computer, but I am working on optionality for both the speaker and monitor.
+
+--[[This is a file system manager, made by 123yeah_boi321, and I hope you can make good use of it! It acts as a way to browse through all your files on a computer, edit them, and run them
+It will automatically be used on a monitor if there is one connected to the computer, I am going to make it be boolean once I get to it]]--
 
 --This is how you can use the program, run it to open the file explorer:
 --
@@ -31,17 +32,18 @@ function fsm.readDir(disk,name)
 	
 end
 
-function fsm.selectionBoxes(boxes,backButton,list)
+function fsm.selectionBoxes(direct,backButton,list)
 	if backButton == true then
         m.setCursorPos(1,1)
         m.blit("<","f","e")
     end
-    for i = 2,boxes+1 do
-        m.setCursorPos(2,i)
-        m.blit("[ ]","000","fff")
-    end
     for i,v in ipairs(list) do
-        m.setCursorPos(5,i+1)
+        m.setCursorPos(2,i+1)
+		if fs.isDir(direct.."/"..v) then
+			m.blit("[ }","000","fff")
+		else
+			m.blit("( )","000","fff")
+		end
         local c = string.rep("0",string.len(v))
         local b = string.rep("f",string.len(v))
         m.blit(v,c,b)
@@ -55,39 +57,55 @@ function fsm.selectBox(x,y,text,color,back)
     m.blit(text,c,b)
 end
 
-function fsm.selection(amountOfBoxes,isX,tsil,isSelection,isFirst,winMon)
-	local event, side, x, y = os.pullEventRaw(winMon)
-    fsm.selectionBoxes(amountOfBoxes,isX,tsil)
-    if x >= 2 and y >= 2 and y <= amountOfBoxes+1 then
-        fsm.selectionBoxes(amountOfBoxes,isX,tsil)
-        m.setCursorPos(2,y)
-        m.blit("[ ]","000","f8f")
-        s.playNote("bit",100,16)
-		fsm.selectBox(3,1,"  select  ","f","0")
-		fsm.selectBox(15,1," edit ","f","0")
-        return false,"true", y-1
-    elseif x == 1 and y == 1 and isFirst == true then
-        s.playNote("bit",100,6)
-        m.clear()
-		fsm.selectBox(3,1,"  select  ","f","f")
-        return true,"true"
-    elseif x  >= 3 and x <= 3+string.len("  select  ") and y == 1 and isSelection == true then
-        m.clear()
-		s.playNote("bit",100,24)
-        return false,"next",y
-    elseif x >= 15 and x <= 15+string.len(" edit ") and y == 1 and isSelection == true then
+function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese,length)
+	local event, doesntmatter, x, y = os.pullEventRaw(winMon)
+    fsm.selectionBoxes(dire,isX,tsil)
+    if type(doesntmatter) == "string" or doesntmatter == 1 then
+		if x >= inBeese and x <= inBeese+string.len("  rename ") and y == inCheese+1 then
+			m.clear()
+			fsm.selectionBoxes(dire,isX,tsil)
+			m.setCursorPos(3,inCheese+1)
+			m.blit(" ","0","8")
+			return false,"rename",y,x
+		elseif x >= 2 and y >= 2 and y <= length+1 then
+			m.clear()
+			fsm.selectionBoxes(dire,isX,tsil)
+			m.setCursorPos(3,y)
+			m.blit(" ","0","8")
+			s.playNote("bit",100,16)
+			fsm.selectBox(3,1,"  select  ","f","0")
+			fsm.selectBox(15,1," edit ","f","0")
+			return false,"true", y-1
+		elseif x == 1 and y == 1 and isFirst == true then
+			s.playNote("bit",100,6)
+			m.clear()
+			fsm.selectBox(3,1,"  select  ","f","f")
+			return true,"true"
+		elseif x  >= 3 and x <= 3+string.len("  select  ") and y == 1 and isSelection == true then
+			m.clear()
+			s.playNote("bit",100,24)
+			return false,"next",y
+		elseif x >= 15 and x <= 15+string.len(" edit ") and y == 1 and isSelection == true then
+			m.clear()
+			s.playNote("bit",100,16)
+			sleep(0.1)
+			s.playNote("bit",100,18)
+			sleep(0.1)
+			s.playNote("bit",100,24)
+			return false,"edit",y
+		elseif x == 1 or y >= length+2 or y == 1 then
+			fsm.selectionBoxes(dire,isX,tsil)
+			fsm.selectBox(3,1,"  select  ","f","f")
+			return false, "false"
+		end
+	elseif doesntmatter == 2 then
 		m.clear()
-		s.playNote("bit",100,16)
-		sleep(0.1)
-		s.playNote("bit",100,18)
-		sleep(0.1)
-		s.playNote("bit",100,24)
-		return false,"edit",y
-	elseif x == 1 or y >= amountOfBoxes+2 or y == 1 then
-        fsm.selectionBoxes(amountOfBoxes,isX,tsil)
-		fsm.selectBox(3,1,"  select  ","f","f")
-        return false, "false"
-    end
+		fsm.selectionBoxes(dire,isX,tsil)
+		m.setCursorPos(3,inCheese+1)
+		m.blit(" ","0","8")
+		fsm.selectBox(x,y,"  rename ","f","0")
+		return false,"menu",y,x
+	end
 end
 
 function fsm.main(isOnDisk,directory,first)
@@ -95,7 +113,7 @@ function fsm.main(isOnDisk,directory,first)
 		m = peripheral.find("monitor")
 		click = "monitor_touch"
 	else
-		m = window.create(term.current(),1,1,20,5)
+		m = window.create(term.current(),1,1,45,20)
 		click = "mouse_click"
 	end
 	if peripheral.find("speaker") then
@@ -105,19 +123,19 @@ function fsm.main(isOnDisk,directory,first)
 	local check,list,length,dirName = fsm.readDir(isOnDisk,directory)
 	local isFirstDirectory = true
 	local diskCheck = isOnDisk
-	local firstDirectory = first
 	burger = false
 	if directory == first then
 		isFirstDirectory = false
 	end
 	m.clear()
-	fsm.selectionBoxes(length,isFirstDirectory,list)
+	fsm.selectionBoxes(directory,isFirstDirectory,list)
+	cheese = -100
+	beese = -100
 	while true do
-		term.setCursorPos(1,1)
-		local m,n,y = fsm.selection(length,isFirstDirectory,list,burger,isFirstDirectory,click)
-		if m == true then
-		  fsm.main(isOnDisk,fs.getDir(directory),first)
- 	       break
+		local mm,n,y,x = fsm.selection(directory,isFirstDirectory,list,burger,isFirstDirectory,click,cheese,beese,length)
+		if mm == true then
+			fsm.main(isOnDisk,fs.getDir(directory),first)
+			break
 	    elseif n == "next" then
 		   burger = true
 			if fs.isDir(dirName.."/"..list[cheese]) == true then
@@ -136,8 +154,18 @@ function fsm.main(isOnDisk,directory,first)
 				fsm.main(isOnDisk,directory,first)
 			end
 			break
-	    else
-	        cheese = y
+	    elseif n == "rename" then
+			fsm.selectBox(5,cheese+1,list[cheese],"f","f")
+			m.setCursorPos(5,cheese+1)
+			shell.run("rename "..dirName.."/"..list[cheese].." "..dirName.."/"..read())
+			fsm.main(isOnDisk,directory,first)
+			break
+		else
+			if n == "menu" then
+				beese = x
+			else
+				cheese = y
+			end
 			if n == "true" then
 				burger = true
 			end
