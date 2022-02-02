@@ -168,6 +168,8 @@ function fsm.main(isOnDisk,directory,first)
 			end
 			if n == "true" then
 				burger = true
+			elseif n == "false" then
+				burger = false
 			end
 	    end
 	end
