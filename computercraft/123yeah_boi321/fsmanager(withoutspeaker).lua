@@ -72,26 +72,18 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 			fsm.selectionBoxes(dire,isX,tsil)
 			m.setCursorPos(3,y)
 			m.blit(" ","0","8")
-			s.playNote("bit",100,16)
 			fsm.selectBox(3,1,"  select  ","f","0")
 			fsm.selectBox(15,1," edit ","f","0")
 			return false,"true", y-1
 		elseif x == 1 and y == 1 and isFirst == true then
-			s.playNote("bit",100,6)
 			m.clear()
 			fsm.selectBox(3,1,"  select  ","f","f")
 			return true,"true"
 		elseif x  >= 3 and x <= 3+string.len("  select  ") and y == 1 and isSelection == true then
 			m.clear()
-			s.playNote("bit",100,24)
 			return false,"next",y
 		elseif x >= 15 and x <= 15+string.len(" edit ") and y == 1 and isSelection == true then
 			m.clear()
-			s.playNote("bit",100,16)
-			sleep(0.1)
-			s.playNote("bit",100,18)
-			sleep(0.1)
-			s.playNote("bit",100,24)
 			return false,"edit",y
 		elseif x == 1 or y >= length+2 or y == 1 then
 			fsm.selectionBoxes(dire,isX,tsil)
@@ -115,9 +107,6 @@ function fsm.main(isOnDisk,directory,first)
 	else
 		m = window.create(term.current(),1,1,45,20)
 		click = "mouse_click"
-	end
-	if peripheral.find("speaker") then
-		s = peripheral.find("speaker")
 	end
 	m.clear()
 	local check,list,length,dirName = fsm.readDir(isOnDisk,directory)
