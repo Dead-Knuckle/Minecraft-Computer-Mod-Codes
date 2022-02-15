@@ -8,11 +8,11 @@ local fsm = require("fsmanager")
 fsm.main(false,"","")
 ]]--
 
-m = peripheral.find("monitor")
-if peripheral.find("speaker") then
-    s = peripheral.find("speaker")
-end
 local fsm = {}
+
+function fsm.playNote(inst,vol,pitch)
+	return false
+end
 
 function fsm.readDir(disk,name)
 	if disk == true then
@@ -118,6 +118,8 @@ function fsm.main(isOnDisk,directory,first)
 	end
 	if peripheral.find("speaker") then
 		s = peripheral.find("speaker")
+	else
+		s = fsm
 	end
 	m.clear()
 	local check,list,length,dirName = fsm.readDir(isOnDisk,directory)
