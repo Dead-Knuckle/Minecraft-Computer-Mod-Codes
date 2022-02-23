@@ -3,13 +3,14 @@ It will automatically be used on a monitor if there is one connected to the comp
 
 --[[This is how you can use the program, run it to open the file explorer:
 local fsm = require("fsmanager")
-local dB,dT,dF =fsm.main(false,"","")
+local dB,dT,dF,dS =fsm.main(false,"","")
 term.clear
 while true do
-	local dBt,dTt,dFt = fsm.main(dB,dT,dF)
+	local dBt,dTt,dFt,dSt = fsm.main(dB,dT,dF)
 	dB = dBt
 	dT = dTt
 	dF = dFt
+	dS = dSt
 end
 ]]--
 
@@ -131,7 +132,7 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 	until(returned == true)
 end
 
-function fsm.main(isOnDisk,directory,first)
+function fsm.main(isOnDisk,directory,first,doascroll)
 	if peripheral.find("monitor") then
 		m = peripheral.find("monitor")
 		clickVar = "monitor_touch"
@@ -153,7 +154,8 @@ function fsm.main(isOnDisk,directory,first)
 		isFirstDirectory = false
 	end
 	m.clear()
-	local churger = 0
+	local churger = doascroll
+	local whydoIdothis = 0
 	fsm.selectionBoxes(directory,isFirstDirectory,list,churger)
 	local cheese = -100
 	local beese = -100
@@ -161,18 +163,16 @@ function fsm.main(isOnDisk,directory,first)
 	while true do
 		local mm,n,nY,nX,aaaaa = fsm.selection(directory,isFirstDirectory,list,burger,isFirstDirectory,clickVar,cheese,beese,length,churger)
 		if mm == true then
---			fsm.main(isOnDisk,fs.getDir(directory),first)
 			hurburderber = fs.getDir(directory)
 			break
 	    elseif n == "next" then
 		   burger = true
 			if fs.isDir(dirName.."/"..list[cheese]) == true then
---				fsm.main(isOnDisk,directory.."/"..list[cheese],first)
 				hurburderber = directory.."/"..list[cheese]
 			else
 				local id = shell.openTab(dirName.."/"..list[cheese])
 				shell.switchTab(id)
---				fsm.main(isOnDisk,directory,first)
+				whydoIdothis = aaaaa
 			end
 			break
 		elseif n == "edit" then
@@ -180,14 +180,14 @@ function fsm.main(isOnDisk,directory,first)
 			if fs.isDir(dirName.."/"..list[cheese]) == false then
 				local id = shell.openTab("edit "..dirName.."/"..list[cheese])
 				shell.switchTab(id)
---				fsm.main(isOnDisk,directory,first)
+				whydoIdothis = aaaaa
 			end
 			break
 	    elseif n == "rename" then
 			fsm.selectBox(5,cheese+1-aaaaa,list[cheese],"f","f")
 			m.setCursorPos(5,cheese+1-aaaaa)
 			shell.run("rename "..dirName.."/"..list[cheese].." "..dirName.."/"..read())
---			fsm.main(isOnDisk,directory,first)
+			whydoIdothis = aaaaa
 			break
 		else
 			if n == "menu" then
@@ -203,7 +203,7 @@ function fsm.main(isOnDisk,directory,first)
 	    end
 		churger = aaaaa
 	end
-	return isOnDisk,hurburderber,first
+	return isOnDisk,hurburderber,first,whydoIdothis
 end
 
 return fsm
