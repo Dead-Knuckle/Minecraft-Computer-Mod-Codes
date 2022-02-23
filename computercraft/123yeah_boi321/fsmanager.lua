@@ -1,7 +1,7 @@
 --[[This is a file system manager, made by 123yeah_boi321, and I hope you can make good use of it! It acts as a way to browse through all your files on a computer, edit them, and run them
 It will automatically be used on a monitor if there is one connected to the computer, I am going to make it be boolean once I get to it]]--
 
---[[This is how you can use the program, run it to open the file explorer:
+--[[This is an example of how you use the file manager, run code similar to this to open it:
 local fsm = require("fsmanager")
 local dB,dT,dF,dS =fsm.main(false,"","")
 term.clear
