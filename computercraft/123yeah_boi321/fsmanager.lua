@@ -3,10 +3,10 @@ It will automatically be used on a monitor if there is one connected to the comp
 
 --[[This is an example of how you use the file manager, run code similar to this to open it:
 local fsm = require("fsmanager")
-local dB,dT,dF,dS =fsm.main(false,"","")
+local dB,dT,dF,dS =fsm.main(false,"","",0)
 term.clear
 while true do
-	local dBt,dTt,dFt,dSt = fsm.main(dB,dT,dF)
+	local dBt,dTt,dFt,dSt = fsm.main(dB,dT,dF,dS)
 	dB = dBt
 	dT = dTt
 	dF = dFt
