@@ -9,7 +9,7 @@ else
 	end
 end
 local dB,dT,dF,dS =fsm.main(false,"","",0)
-term.clear
+term.clear()
 while true do
 	local dBt,dTt,dFt,dSt = fsm.main(dB,dT,dF,dS)
 	dB = dBt
