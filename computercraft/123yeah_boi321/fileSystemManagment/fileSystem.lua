@@ -1,4 +1,4 @@
-if fs.exists("fsmanager.lua") then
+if shell.resolveProgram("fsmanager") then
 	--nothing yet
 else
 	print("Hmm.. It seems you do not have the main file. Would you like me to download it?")
@@ -10,7 +10,7 @@ else
 		return
 	end
 end
-local fsm = require("fsmanager")
+local fsm = require(string.gsub(shell.resolveProgram("fsmanager"),".lua",""))
 local dB,dT,dF,dS =fsm.main(false,"","",0)
 term.clear()
 while true do
