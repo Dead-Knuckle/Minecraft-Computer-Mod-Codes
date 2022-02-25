@@ -13,8 +13,7 @@ if shell.resolveProgram("fsmanager") then
 		local re = read()
 		if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "update" or string.upper(re) == "HEC YEA BROTHER" then
 			fs.delete(fsmanResolved)
-			fs.copy("temp.lua",fsmanResolved)
-			fs.delete("temp.lua")
+			fs.move("temp.lua",fsmanResolved)
 		end
 	end
 else
