@@ -18,6 +18,7 @@ if shell.resolveProgram("fsmanager") then
 	else
 		fs.delete("temp.lua")
 	end
+	term.clear()
 else
 	print("Hmm.. It seems you do not have the main file. Would you like me to download it?")
 	print("Y/N")
