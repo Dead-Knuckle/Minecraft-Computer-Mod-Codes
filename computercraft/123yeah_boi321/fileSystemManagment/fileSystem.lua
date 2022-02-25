@@ -7,7 +7,7 @@ if shell.resolveProgram("fsmanager") then
 	local fsmanFile = fs.open(fsmanResolved, "r")
 	local fsman = fsmanFile.readAll()
 	fsmanFile.close()
-	if fsman == temp then
+	if fsman ~= temp then
 		print("It seems that fsmanager may need an update. Would you like to install?")
 		print("Y/N")
 		local re = read()
