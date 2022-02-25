@@ -15,6 +15,8 @@ if shell.resolveProgram("fsmanager") then
 			fs.delete(fsmanResolved)
 			fs.move("temp.lua",fsmanResolved)
 		end
+	else
+		fs.delete("temp.lua")
 	end
 else
 	print("Hmm.. It seems you do not have the main file. Would you like me to download it?")
