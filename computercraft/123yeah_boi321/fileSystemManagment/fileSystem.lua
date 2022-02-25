@@ -1,10 +1,10 @@
 if shell.resolveProgram("fsmanager") then
 	shell.run("wget https://raw.githubusercontent.com/Dead-Knuckle/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua temp.lua")
-	local tempFile = fs.open("temp.lua", r)
+	local tempFile = fs.open("temp.lua", "r")
 	local temp = tempFile.readAll()
 	tempFile.close()
 	local fsmanResolved = shell.resolveProgram("fsmanager")
-	local fsmanFile = fs.open(fsmanResolved)
+	local fsmanFile = fs.open(fsmanResolved, "r")
 	local fsman = fsmanFile.readAll()
 	fsmanFile.close()
 	if fsman == temp then
