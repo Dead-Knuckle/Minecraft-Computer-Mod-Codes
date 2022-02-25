@@ -1,10 +1,27 @@
 if shell.resolveProgram("fsmanager") then
-	--nothing yet
+	shell.run("wget https://raw.githubusercontent.com/Dead-Knuckle/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua temp.lua")
+	local tempFile = fs.open("temp.lua", r)
+	local temp = tempFile.readAll()
+	tempFile.close()
+	local fsmanResolved = shell.resolveProgram("fsmanager")
+	local fsmanFile = fs.open(fsmanResolved)
+	local fsman = fsmanFile.readAll()
+	fsmanFile.close()
+	if fsman == temp then
+		print("It seems that fsmanager may need an update. Would you like to install?")
+		print("Y/N")
+		local re = read()
+		if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "update" or string.upper(re) == "HEC YEA BROTHER" then
+			fs.delete(fsmanResolved)
+			fs.copy("temp.lua",fsmanResolved)
+			fs.delete("temp.lua")
+		end
+	end
 else
 	print("Hmm.. It seems you do not have the main file. Would you like me to download it?")
 	print("Y/N")
 	local re = read()
-	if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "HEK YEA BROTHER" then
+	if string.lower(re) == "y" or string.lower(re) == "yes" or string.upper(re) == "HEK YEA BROTHER" then
 		shell.run("wget https://raw.githubusercontent.com/Dead-Knuckle/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua")
 	else
 		return
