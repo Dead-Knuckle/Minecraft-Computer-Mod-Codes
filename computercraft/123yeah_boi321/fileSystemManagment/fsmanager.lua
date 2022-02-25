@@ -138,7 +138,7 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 		clickVar = "monitor_touch"
 	else
 		m = window.create(term.current(),1,1,45,20)
-		clickVar = "mouse_up"
+		clickVar = "mouse_click"
 	end
 	if peripheral.find("speaker") then
 		s = peripheral.find("speaker")
