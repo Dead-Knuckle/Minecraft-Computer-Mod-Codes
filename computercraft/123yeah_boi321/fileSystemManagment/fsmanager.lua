@@ -41,9 +41,9 @@ function fsm.selectionBoxes(direct,backButton,list,start)
     	end
 	if table.getn(list) > 19 then
 		m.setCursorPos(1,2)
-		m.blit("^","0","4")
+		m.blit("^","0","8")
 		m.setCursorPos(1,3)
-		m.blit("v","0","4")
+		m.blit("v","0","8")
 	end
     	for i,v in ipairs(list) do
        		m.setCursorPos(2,i+1)
