@@ -14,6 +14,8 @@ if shell.resolveProgram("fsmanager") then
 		if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "update" or string.upper(re) == "HEC YEA BROTHER" then
 			fs.delete(fsmanResolved)
 			fs.move("temp.lua",fsmanResolved)
+		else
+			fs.delete("temp.lua")
 		end
 	else
 		fs.delete("temp.lua")
