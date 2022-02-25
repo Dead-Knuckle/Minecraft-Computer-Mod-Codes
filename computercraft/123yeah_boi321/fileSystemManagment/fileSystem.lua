@@ -29,6 +29,7 @@ else
 		return
 	end
 end
+term.clear()
 local fsm = require(string.gsub(shell.resolveProgram("fsmanager"),".lua",""))
 local dB,dT,dF,dS =fsm.main(false,"","",0)
 term.clear()
