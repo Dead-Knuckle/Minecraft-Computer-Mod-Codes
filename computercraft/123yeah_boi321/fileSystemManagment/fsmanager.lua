@@ -27,11 +27,7 @@ function fsm.readDir(disk,name)
         n = name
     end
     if fs.isDir(n) == true then
-        count = 0
-        for i,v in ipairs(fs.list(n)) do
-			count = count + 1
-        end   
-        return true, fs.list(n), count, n
+        return true, fs.list(n), table.getn(fs.list(n)), n
     else
         return false, "The input, "..n.." was not a directory!", count
     end
@@ -40,11 +36,17 @@ end
 
 function fsm.selectionBoxes(direct,backButton,list,start)
 	if backButton == true then
-        m.setCursorPos(1,1)
-        m.blit("<","f","e")
-    end
-    for i,v in ipairs(list) do
-        m.setCursorPos(2,i+1)
+       		m.setCursorPos(1,1)
+		m.blit("<","f","e")
+    	end
+	if table.getn(list) > 19 then
+		m.setCursorPos(1,2)
+		m.blit("^","0","4")
+		m.setCursorPos(1,3)
+		m.blit("v","0","4")
+	end
+    	for i,v in ipairs(list) do
+       		m.setCursorPos(2,i+1)
 		yhn = i + start
 		if yhn > #list then break end
 		if fs.isDir(direct.."/"..list[yhn]) then
@@ -52,10 +54,10 @@ function fsm.selectionBoxes(direct,backButton,list,start)
 		else
 			m.blit("( )","000","fff")
 		end
-        local c = string.rep("0",string.len(list[yhn]))
-        local b = string.rep("f",string.len(list[yhn]))
-        m.blit(list[yhn],c,b)
-    end
+        	local c = string.rep("0",string.len(list[yhn]))
+        	local b = string.rep("f",string.len(list[yhn]))
+        	m.blit(list[yhn],c,b)
+  	end
 end
 
 function fsm.selectBox(x,y,text,color,back)
