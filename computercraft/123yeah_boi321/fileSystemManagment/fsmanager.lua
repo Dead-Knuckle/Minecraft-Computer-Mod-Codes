@@ -28,11 +28,7 @@ function fsm.readDir(disk,name)
         n = name
     end
     if fs.isDir(n) == true then
-        count = 0
-        for i,v in ipairs(fs.list(n)) do
-			count = count + 1
-        end   
-        return true, fs.list(n), count, n
+        return true, fs.list(n), table.getn(fs.list(n)), n
     else
         return false, "The input, "..n.." was not a directory!", count
     end
@@ -41,11 +37,17 @@ end
 
 function fsm.selectionBoxes(direct,backButton,list,start)
 	if backButton == true then
-        m.setCursorPos(1,1)
-        m.blit("<","f","e")
-    end
-    for i,v in ipairs(list) do
-        m.setCursorPos(2,i+1)
+       		m.setCursorPos(1,1)
+		m.blit("<","f","e")
+    	end
+	if table.getn(list) > 19 then
+		m.setCursorPos(1,2)
+		m.blit("^","0","8")
+		m.setCursorPos(1,3)
+		m.blit("v","0","8")
+	end
+    	for i,v in ipairs(list) do
+       		m.setCursorPos(2,i+1)
 		yhn = i + start
 		if yhn > #list then break end
 		if fs.isDir(direct.."/"..list[yhn]) then
@@ -53,10 +55,10 @@ function fsm.selectionBoxes(direct,backButton,list,start)
 		else
 			m.blit("( )","000","fff")
 		end
-        local c = string.rep("0",string.len(list[yhn]))
-        local b = string.rep("f",string.len(list[yhn]))
-        m.blit(list[yhn],c,b)
-    end
+        	local c = string.rep("0",string.len(list[yhn]))
+        	local b = string.rep("f",string.len(list[yhn]))
+        	m.blit(list[yhn],c,b)
+  	end
 end
 
 function fsm.selectBox(x,y,text,color,back)
@@ -94,26 +96,26 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 					fsm.selectionBoxes(dire,isX,tsil,scrollDis)
 					m.setCursorPos(3,y)
 					m.blit(" ","0","8")
-					s.playNote("bit",100,16)
+					s.playNote("bit",1,16)
 					fsm.selectBox(3,1,"  select  ","f","0")
 					fsm.selectBox(15,1," edit ","f","0")
 					return false,"true",y-1+scrollDis,x,scrollDis
 				elseif x == 1 and y == 1 and isFirst == true then
-					s.playNote("bit",100,6)
+					s.playNote("bit",1,6)
 					m.clear()
 					fsm.selectBox(3,1,"  select  ","f","f")
 					return true,"true",y+scrollDis,x,scrollDis
 				elseif x  >= 3 and x <= 3+string.len("  select  ") and y == 1 and isSelection == true then
 					m.clear()
-					s.playNote("bit",100,24)
+					s.playNote("bit",1,24)
 					return false,"next",y+scrollDis,x,scrollDis
 				elseif x >= 15 and x <= 15+string.len(" edit ") and y == 1 and isSelection == true then
 					m.clear()
-					s.playNote("bit",100,16)
+					s.playNote("bit",1,16)
 					sleep(0.1)
-					s.playNote("bit",100,18)
+					s.playNote("bit",1,18)
 					sleep(0.1)
-					s.playNote("bit",100,24)
+					s.playNote("bit",1,24)
 					return false,"edit",y+scrollDis,x,scrollDis
 				elseif x == 1 or y >= length+2-scrollDis or y == 1 then
 					fsm.selectionBoxes(dire,isX,tsil,scrollDis)
