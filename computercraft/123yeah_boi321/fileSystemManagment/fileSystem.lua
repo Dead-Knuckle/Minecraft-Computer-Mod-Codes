@@ -1,6 +1,8 @@
 if shell.resolveProgram("fsmanager") then
-	local tempFile = http.get("https://raw.githubusercontent.com/YeahBoi321/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua")
+	shell.run("wget https://raw.githubusercontent.com/Dead-Knuckle/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua temp.lua")
+	local tempFile = fs.open("temp.lua", "r")
 	local temp = tempFile.readAll()
+	tempFile.close()
 	local fsmanResolved = shell.resolveProgram("fsmanager")
 	local fsmanFile = fs.open(fsmanResolved, "r")
 	local fsman = fsmanFile.readAll()
@@ -10,9 +12,8 @@ if shell.resolveProgram("fsmanager") then
 		print("Y/N")
 		local re = read()
 		if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "update" or string.upper(re) == "HEC YEA BROTHER" then
-			local fsmanFile = fs.open(fsmanResolved,"w")
-			fsmanFile.write(temp)
-			fsmanFile.close()
+			fs.delete(fsmanResolved)
+			fs.move("temp.lua",fsmanResolved)
 		end
 	else
 		fs.delete("temp.lua")
@@ -23,7 +24,7 @@ else
 	print("Y/N")
 	local re = read()
 	if string.lower(re) == "y" or string.lower(re) == "yes" or string.upper(re) == "HEK YEA BROTHER" then
-		shell.run("wget https://raw.githubusercontent.com/YeahBoi321/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua")
+		shell.run("wget https://raw.githubusercontent.com/Dead-Knuckle/Minecraft-Computer-Mod-Codes/main/computercraft/123yeah_boi321/fileSystemManagment/fsmanager.lua")
 	else
 		return
 	end
