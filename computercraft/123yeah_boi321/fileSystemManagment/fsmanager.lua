@@ -12,6 +12,7 @@ while true do
 	dF = dFt
 	dS = dSt
 end
+or use the other program on my github, fileSystem, to run it, with an updater as well.
 ]]--
 
 local fsm = {}
