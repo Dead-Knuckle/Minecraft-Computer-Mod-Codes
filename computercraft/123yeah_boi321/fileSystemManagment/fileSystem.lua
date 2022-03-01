@@ -12,8 +12,7 @@ if shell.resolveProgram("fsmanager") then
 		if string.lower(re) == "y" or string.lower(re) == "yes" or string.lower(re) == "update" or string.upper(re) == "HEC YEA BROTHER" then
 			local fsmanFile = fs.open(fsmanResolved,"w")
 			fsmanFile.write(temp)
-		else
-			fs.delete("temp.lua")
+			fsmanFile.close()
 		end
 	else
 		fs.delete("temp.lua")
