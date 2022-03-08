@@ -45,14 +45,14 @@ function refuel()
 end
 function invSort()   
   turtle.select(1)
-blackList = {"minecraft:cobblestone","minecraft:dirt","minecraft:granite","minecraft:diorite","minecraft:gravel","minecraft:flint", "minecraft:netherrack"}
+blackList = {"minecraft:cobblestone","minecraft:dirt","minecraft:granite","minecraft:diorite","minecraft:gravel","minecraft:flint", "minecraft:netherrack", "minecraft:cobbled_deepslate", "minecraft:tuff"}
     for i = 1,15 do
 turtle.select(i)
 x,y,z = turtle.getItemDetail()
  if turtle.getItemCount() < 1 then
  sleep(0.01)
  else
- for i = 1,7 do 
+ for i = 1,9 do 
 if x.name == "minecraft:coal" then
   turtle.transferTo(16)
 end
