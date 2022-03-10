@@ -1,6 +1,6 @@
 function refuel()
-term.setCursorPos(1,2)
 repeat
+ term.setCursorPos(1,2) 
  term.clearLine()
   print("Fuel: ".. turtle.getFuelLevel())
 turtle.select(16)
