@@ -1,11 +1,12 @@
 function refuel()
-term.setCursorPos(2,1)
-print("Fuel: ".. turtle.getFuelLevel())
-
-if turtle.getFuelLevel() < 100 then
+term.setCursorPos(1,2)
+repeat
+ term.clearLine()
+  print("Fuel: ".. turtle.getFuelLevel())
 turtle.select(16)
+ turtle.refuel(1)
 turtle.select(1)
-end
+until(turtle.getFuelLevel() < 200)
 end
 function chop()
  turtle.select(16)
