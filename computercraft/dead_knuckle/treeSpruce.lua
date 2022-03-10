@@ -6,7 +6,7 @@ repeat
 turtle.select(16)
  turtle.refuel(1)
 turtle.select(1)
-until(turtle.getFuelLevel() < 200)
+until(turtle.getFuelLevel() > 200)
 end
 function chop()
  turtle.select(16)
