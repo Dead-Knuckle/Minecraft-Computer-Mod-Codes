@@ -123,8 +123,10 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 			if length > height then scrollDis = scrollDis + doesntmatter end
 			if length+1-scrollDis < height then scrollDis = length+1-height end
 			if scrollDis < 0 then scrollDis = 0 end
-			m.clear()
-			fsm.selectionBoxes(dire,isX,tsil,scrollDis)
+			if doesntmatter == 0 then
+				m.clear()
+				fsm.selectionBoxes(dire,isX,tsil,scrollDis)
+			end
 		elseif evDa[1] == winMon then
 			returned = true
 			fsm.selectionBoxes(dire,isX,tsil,scrollDis)
