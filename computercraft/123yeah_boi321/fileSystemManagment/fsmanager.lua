@@ -22,25 +22,67 @@ function fsm.playNote(inst,vol,pitch)
 end
 
 function fsm.readDir(disk,name)
+	print("Reading Directory!")
 	if disk == true then
         n = "disk/"..name
     else
         n = name
     end
+	local fileList = {}
     if fs.isDir(n) == true then
-        return true, fs.list(n), table.getn(fs.list(n)), n
+		local check = true
+		local index = 1
+		for i = 1,2 do
+			for i,v in ipairs(fs.list(n)) do
+				if fs.isDir(n.."/"..v) == check then
+					fileList[index] = v
+					index = index + 1
+				end
+			end
+			check = false
+		end
+        return true, fileList, table.getn(fileList), n
     else
         return false, "The input, "..n.." was not a directory!", count
     end
-	
+end
+
+function fsm.rename(startdir,target)
+	local index = 1
+	if fs.exists(target) == true then
+		temp,count = string.gsub(target,"%.","%.")
+		if count > 1 then
+			temp = string.gsub(target,"%.","%%",count-1)
+		end
+		if count > 0 then
+			check = true
+			repeat
+				tempcheck = string.gsub(temp,"%.",("(%d)."):format(index))
+				check = fs.exists(string.gsub(tempcheck,"%%","%."))
+				index = index + 1
+			until(check == false)
+			temp = tempcheck
+			temp = string.gsub(temp,"%%","%.")
+		else
+			check = true
+			repeat
+				tempcheck = temp..("(%d)"):format(index)
+				check = fs.exists(tempcheck)
+				index = index + 1
+			until(check == false)
+			temp = tempcheck
+		end
+	else temp = target end
+	fs.move(startdir,temp)
 end
 
 function fsm.selectionBoxes(direct,backButton,list,start)
+	local width,height = m.getSize()
 	if backButton == true then
        		m.setCursorPos(1,1)
 		m.blit("<","f","e")
     	end
-	if table.getn(list) > 19 then
+	if table.getn(list) > height-1 then
 		m.setCursorPos(1,2)
 		m.blit("^","0","8")
 		m.setCursorPos(1,3)
@@ -71,13 +113,15 @@ end
 function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese,length,scrDis)
 	local returned = false
 	local scrollDis = scrDis
+	local width,height = m.getSize()
 	repeat
 		local evDa = {os.pullEvent()}
 		local doesntmatter = evDa[2]
 		local x = evDa[3]
 		local y = evDa[4]
 		if evDa[1] == "mouse_scroll" then
-			scrollDis = scrollDis + doesntmatter
+			if length > height then scrollDis = scrollDis + doesntmatter end
+			if length+1-scrollDis < height then scrollDis = length+1-height end
 			if scrollDis < 0 then scrollDis = 0 end
 			m.clear()
 			fsm.selectionBoxes(dire,isX,tsil,scrollDis)
@@ -136,11 +180,12 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 end
 
 function fsm.main(isOnDisk,directory,first,doascroll)
+	print("Check, all good here!")
 	if peripheral.find("monitor") then
 		m = peripheral.find("monitor")
 		clickVar = "monitor_touch"
 	else
-		m = window.create(term.current(),1,1,45,20)
+		m = term
 		clickVar = "mouse_click"
 	end
 	if peripheral.find("speaker") then
@@ -149,6 +194,7 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 		s = fsm
 	end
 	m.clear()
+	print("Good here, too!")
 	local check,list,length,dirName = fsm.readDir(isOnDisk,directory)
 	local isFirstDirectory = true
 	local diskCheck = isOnDisk
@@ -189,7 +235,7 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 	    elseif n == "rename" then
 			fsm.selectBox(5,cheese+1-aaaaa,list[cheese],"f","f")
 			m.setCursorPos(5,cheese+1-aaaaa)
-			shell.run("rename "..dirName.."/"..list[cheese].." "..dirName.."/"..read())
+			fsm.rename(dirName.."/"..list[cheese],dirName.."/"..read())
 			whydoIdothis = aaaaa
 			break
 		else
