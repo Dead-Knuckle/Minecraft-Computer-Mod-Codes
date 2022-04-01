@@ -84,9 +84,9 @@ function fsm.selectionBoxes(direct,backButton,list,start)
     	end
 	if table.getn(list) > height-1 then
 		m.setCursorPos(1,2)
-		m.blit("^","0","8")
+		m.blit("\x18","0","8")
 		m.setCursorPos(1,3)
-		m.blit("v","0","8")
+		m.blit("\x19","0","8")
 	end
     	for i,v in ipairs(list) do
        		m.setCursorPos(2,i+1)
@@ -97,9 +97,9 @@ function fsm.selectionBoxes(direct,backButton,list,start)
 		else
 			m.blit("( )","000","fff")
 		end
-        	local c = string.rep("0",string.len(list[yhn]))
-        	local b = string.rep("f",string.len(list[yhn]))
-        	m.blit(list[yhn],c,b)
+    	local c = string.rep("0",string.len(list[yhn]))
+    	local b = string.rep("f",string.len(list[yhn]))
+        m.blit(list[yhn],c,b)
   	end
 end
 
@@ -115,7 +115,8 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 	local scrollDis = scrDis
 	local width,height = m.getSize()
 	repeat
-		local evDa = {os.pullEvent()}
+		local prevScroll = scrollDis
+		local evDa = {os.pullEventRaw()}
 		local doesntmatter = evDa[2]
 		local x = evDa[3]
 		local y = evDa[4]
@@ -124,6 +125,10 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 			if length+1-scrollDis < height then scrollDis = length+1-height end
 			if scrollDis < 0 then scrollDis = 0 end
 			if doesntmatter == 0 then
+				m.clear()
+				fsm.selectionBoxes(dire,isX,tsil,scrollDis)
+			end
+			if scrollDis ~= prevScroll then
 				m.clear()
 				fsm.selectionBoxes(dire,isX,tsil,scrollDis)
 			end
@@ -151,6 +156,16 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 					m.clear()
 					fsm.selectBox(3,1,"  select  ","f","f")
 					return true,"true",y+scrollDis,x,scrollDis
+--[[			elseif x == 1 and y >= 2 and y <= 3 then
+					if length > height then scrollDis = scrollDis + 1 end
+					if length+1-scrollDis < height then scrollDis = length+1-height end
+					if scrollDis < 0 then scrollDis = 0 end
+					if scrollDis == nil then scrollDis = 0 end
+					if scrollDis ~= prevScroll then
+						m.clear()
+						fsm.selectionBoxes(dire,isX,tsil,scrollDis)
+					end
+					print(scrollDis)]]--
 				elseif x  >= 3 and x <= 3+string.len("  select  ") and y == 1 and isSelection == true then
 					m.clear()
 					s.playNote("bit",1,24)
@@ -177,12 +192,13 @@ function fsm.selection(dire,isX,tsil,isSelection,isFirst,winMon,inCheese,inBeese
 				fsm.selectBox(x,y,"  rename ","f","0")
 				return false,"menu",y+scrollDis,x,scrollDis
 			end
+		elseif evDa[1] == "terminate" then
+			return false,"terminate"
 		end
 	until(returned == true)
 end
 
 function fsm.main(isOnDisk,directory,first,doascroll)
-	print("Check, all good here!")
 	if peripheral.find("monitor") then
 		m = peripheral.find("monitor")
 		clickVar = "monitor_touch"
@@ -196,7 +212,6 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 		s = fsm
 	end
 	m.clear()
-	print("Good here, too!")
 	local check,list,length,dirName = fsm.readDir(isOnDisk,directory)
 	local isFirstDirectory = true
 	local diskCheck = isOnDisk
@@ -216,6 +231,9 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 		if mm == true then
 			hurburderber = fs.getDir(directory)
 			break
+		elseif n == "terminate" then
+			m.clear()
+			return isOnDisk,hurburderber,first,whydoIdothis,"terminate"
 	    elseif n == "next" then
 		   burger = true
 			if fs.isDir(dirName.."/"..list[cheese]) == true then
@@ -254,7 +272,7 @@ function fsm.main(isOnDisk,directory,first,doascroll)
 	    end
 		churger = aaaaa
 	end
-	return isOnDisk,hurburderber,first,whydoIdothis
+	return isOnDisk,hurburderber,first,whydoIdothis,"moving on"
 end
 
 return fsm
