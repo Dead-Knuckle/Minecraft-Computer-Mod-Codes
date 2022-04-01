@@ -37,9 +37,14 @@ local fsm = require(string.gsub(shell.resolveProgram("fsmanager"),".lua",""))
 local dB,dT,dF,dS =fsm.main(false,"","",0)
 term.clear()
 while true do
-    local dBt,dTt,dFt,dSt = fsm.main(dB,dT,dF,dS)
+    local dBt,dTt,dFt,dSt,message = fsm.main(dB,dT,dF,dS)
     dB = dBt
     dT = dTt
     dF = dFt
     dS = dSt
+    if message == "terminate" then
+        term.clear()
+        printError("Terminated")
+        break
+    end
 end
