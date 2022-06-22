@@ -20,14 +20,17 @@ function start()
       print("Please Place In Slot 15")
       sleep(2)
      end  
+     term.clear()
+    term.setCursorPos(1,1)
      print("Void items?")
-      term.clear()
       v=read()
       if v == "y" then
         print("Please place Lava Bucket or Flint and Steel in slot 14")
         sleep(2)
         burn = true
       end
+        term.clear()
+    term.setCursorPos(1,1)
   end
   function echest()
     if s == "y" then
