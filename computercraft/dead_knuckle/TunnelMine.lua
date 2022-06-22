@@ -21,16 +21,17 @@ function start()
       sleep(2)
      end  
      term.clear()
-    term.setCursorPos(1,1)
+     term.setCursorPos(1,1)
      print("Void items?")
+      term.clear()
       v=read()
       if v == "y" then
         print("Please place Lava Bucket or Flint and Steel in slot 14")
         sleep(2)
         burn = true
       end
-        term.clear()
-    term.setCursorPos(1,1)
+      term.clear()
+      term.setCursorPos(1,1)
   end
   function echest()
     if s == "y" then
@@ -48,12 +49,16 @@ function start()
 
 function void()
     if burn then
+        turtle.select(1)
+    turtle.digDown()
     turtle.select(14)
     turtle.placeDown()
-    sleep(0.2)
+    sleep(3)
     turtle.placeDown()
     turtle.down()
     turtle.up()
+    turtle.select(1)
+    turtle.placeDown()
     end
 end
   function refuel()
