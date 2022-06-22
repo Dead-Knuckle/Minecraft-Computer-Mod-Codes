@@ -22,7 +22,7 @@ function start()
      end  
      term.clear()
      term.setCursorPos(1,1)
-     print("Void items?")
+     print("Void items? (y/n)")
       v=read()
       if v == "y" then
         print("Please place Lava Bucket or Flint and Steel in slot 14")
