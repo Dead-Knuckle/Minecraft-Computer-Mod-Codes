@@ -67,7 +67,7 @@ if args[1] == "load" then
     loading = true
 end
 
-if args[1] == "edit" then
+if args[1] then
     if args[2] ~= nil then faceName = args[2] else print("File name: ") faceName = read() end
     if fs.exists(faceName..".fcpnt") then
         face = fs.open(faceName..".fcpnt","r")
