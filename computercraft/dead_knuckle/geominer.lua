@@ -48,7 +48,10 @@ term.setCursorPos(1,3)
     end
 print('=======================================')
  if parrot[0] == nil then
+ print("No ores")
  sleep(0.5)
+ term.clear()
+ term.setCursorPos(1,1)
  else 
  print('Please press enter to move forward '.. r .. ' blocks.')
  action = read()
@@ -63,7 +66,7 @@ print('=======================================')
   end
 end
 end
-
+end
 while true do
     main()
 end
