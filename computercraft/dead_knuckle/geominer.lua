@@ -25,43 +25,43 @@ function refuel()
    end
 
 function main()
-    parrot = {}
-    action = 'boat'
-    term.setCursorPos(1,2)
-    print('Moving...')
-    for i = 1,r do
-        turtle.dig()
-        refuel()
-        turtle.forward()
-        turtle.digDown()
-    end
-    local a = geo.scan(r)
-    term.clear()
-    refuel()
-    term.setCursorPos(1,2)
+parrot = {}
+action = 'boat'
+term.setCursorPos(1,2)
+print('Moving...')
+ for i = 1,r do
+ turtle.dig()
+ refuel()
+ turtle.forward()
+ turtle.digDown()
+ end
+local a = geo.scan(r)
+term.clear()
+refuel()
+term.setCursorPos(1,2)
 print('=======================================')
-        term.setCursorPos(1,3)
-    for i,v in ipairs(a) do
-        if string.find(a[i].name,whatLooking) then
-            print(string.gsub(string.gsub(a[i].name,"minecraft:",""),"_"," ").." is at "..a[i].x.." "..a[i].y.." "..a[i].z)
-            table.insert(parrot, a[i].name)
-        end
+term.setCursorPos(1,3)
+ for i,v in ipairs(a) do
+    if string.find(a[i].name,whatLooking) then
+        print(string.gsub(string.gsub(a[i].name,"minecraft:",""),"_"," ").." is at "..a[i].x.." "..a[i].y.." "..a[i].z)
+        table.insert(parrot, a[i].name)
+    end
 print('=======================================')
-    print('Please press enter to move forward '.. r .. ' blocks.')
-    if parrot[0] == nil 
-    sleep(0.5)
-    else 
-    action = read()
-    end
-    if action == "e" then
-    break
-    end
-    if action == "l" then
-     turtle.turnLeft()
-    end
-    if action == "r" then
-     turtle.turnLeft()
-    end
+ if parrot[0] == nil then
+ sleep(0.5)
+ else 
+ print('Please press enter to move forward '.. r .. ' blocks.')
+ action = read()
+  if action == "e" then
+     break
+  end
+  if action == "l" then
+    turtle.turnLeft()
+  end
+  if action == "r" then
+  turtle.turnLeft()
+  end
+end
 end
 
 while true do
