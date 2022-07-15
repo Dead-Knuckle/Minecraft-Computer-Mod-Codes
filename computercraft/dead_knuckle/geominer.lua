@@ -40,7 +40,7 @@ function main()
             print(string.gsub(string.gsub(a[i].name,"minecraft:",""),"_"," ").." is at "..a[i].x.." "..a[i].y.." "..a[i].z)
         end
     end
-    print('Please press enter to move forward '.. r .. 'blocks.')
+    print('Please press enter to move forward '.. r .. ' blocks.')
     read()
 end
 
