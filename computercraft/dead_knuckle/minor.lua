@@ -330,13 +330,11 @@ if  is_running then
         CURRENT_TUNNELS_MINED = i 
     end
     
-
-
+    DROPPIN_VOID()
+    SEARCH_STORAGE()
+    DROPPIN_STORAGE()
+    term.clear()
+    term.setCursorPos(1,1)
+    CHECK_FUEL()
+    UI()
 end
-DROPPIN_VOID()
-SEARCH_STORAGE()
-DROPPIN_STORAGE()
-term.clear()
-term.setCursorPos(1,1)
-CHECK_FUEL()
-UI()
