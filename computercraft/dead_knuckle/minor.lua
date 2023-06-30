@@ -292,7 +292,7 @@ function DIG_TUNNEL()
         term.setTextColor(colors.magenta)
         print('Moving to next tunnel...')
         term.setTextColor(colors.white)
-        turtle.forward()
+        mine()
     end
     turtle.turnLeft()
     turtle.turnLeft()
@@ -327,7 +327,7 @@ if  is_running then
     for i = 1, tunnel_amount do
         DIG_TUNNEL()
         MOVE_TO_NEXT_TUNNEL()
-        CURRENT_TUNNELS_MINED = i 
+        CURRENT_TUNNELS_MINED = i + 1
     end
     
     DROPPIN_VOID()
