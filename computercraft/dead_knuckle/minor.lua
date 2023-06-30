@@ -241,7 +241,13 @@ end
 local function mine()
     turtle.dig()
     turtle.forward()
-    turtle.digDown()
+    local _, inspection = turtle.inspectDown()
+    if inspection then
+        if not light_sources[inspection.name] then
+            turtle.digDown()
+        end
+    end 
+    
     turtle.digUp()
 end
 
