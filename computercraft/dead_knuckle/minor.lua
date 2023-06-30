@@ -335,7 +335,7 @@ if  is_running then
         MOVE_TO_NEXT_TUNNEL()
         CURRENT_TUNNELS_MINED = i + 1
     end
-    
+    CURRENT_TUNNELS_MINED = tunnel_amount
     DROPPIN_VOID()
     SEARCH_STORAGE()
     DROPPIN_STORAGE()
