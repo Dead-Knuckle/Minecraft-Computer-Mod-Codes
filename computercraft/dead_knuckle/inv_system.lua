@@ -1,3 +1,6 @@
+local ITEM_AMOUNT = 16
+
+
 local function pretty_print(strvalue, index)
     term.setCursorPos(1, index)
     term.clearLine()
@@ -119,7 +122,7 @@ local function grab_item(item_name)
             local item = chest_list[i]
             if item then
                 if item.name == item_name then
-                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i)
+                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i, ITEM_AMOUNT)
                 end
             end
 
