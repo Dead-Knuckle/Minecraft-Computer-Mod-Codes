@@ -1,4 +1,14 @@
 local ITEM_AMOUNT = 16
+local options = {"16","32","64","Custom",}
+
+local function printToCenter(content, yoffset)
+    local width, height = term.getSize()
+    local centerX = math.floor(width / 2)
+    local centerY = math.floor(height / 2)
+    local content_center = math.floor(#content / 2)
+    term.setCursorPos(centerX- content_center, centerY-yoffset)
+    io.write(content)
+end
 
 
 local function pretty_print(strvalue, index)
@@ -10,13 +20,21 @@ local function pretty_print(strvalue, index)
     term.setBackgroundColor(colors.black)
 end
 
-local function pretty_write(namestr, valuestr, color)
-    term.setTextColor(colors.white)
-    io.write(namestr..": ")
-    term.setTextColor(color)
-    print(valuestr)
-    term.setTextColor(colors.white)
+local function pretty_write(list, INDEX)
+    term.clear()
+    printToCenter("---AMOUNT---\n", 5)
+    for i = 1, #list, 1 do
+        if i == INDEX then
+            term.setBackgroundColor(colors.pink)
+        end
+        printToCenter(list[i].. " ", 5-i)
+        term.setBackgroundColor(colors.black)
+        LAST = i
+    end
+    print("")
 end
+
+
 function TableConcat(t1,t2)
     for i=1,#t2 do
         t1[#t1+1] = t2[i]
@@ -35,10 +53,10 @@ local function STARTUP_SCREEN()
     print("\nPush \"i\" to input a search term or \"q\" to exit...")
 end
 
-local function user_input()
-    local w, h = term.getSize()
+local function user_input(user_message)
+    local _, h = term.getSize()
     term.setCursorPos(1, h)
-    io.write("Search: ")
+    io.write(user_message)
     return io.read()
 end
 
@@ -90,6 +108,7 @@ end
 
 local function selector(list, count)
     local selected_index = 1
+    pretty_table(list, 1, count)
     while true do
         local event, key = os.pullEvent("key")
         if key == keys.up then
@@ -97,8 +116,8 @@ local function selector(list, count)
         elseif key == keys.down then
             selected_index = selected_index + 1
         elseif key == keys.enter then
-            ITEM_TO_GRAB = list[selected_index]
-            return ITEM_TO_GRAB
+            SELECTED_ITEM = list[selected_index]
+            return SELECTED_ITEM
         elseif key == keys.q then
             break
         end
@@ -113,16 +132,48 @@ local function selector(list, count)
     end
 end
 
-local function grab_item(item_name)
+local function amount_selector(options)
+    local INDEX = 1
+    pretty_write(options,  1)
+    while true do
+        local event, key = os.pullEvent("key")
+        if key == keys.up then
+            INDEX = INDEX - 1
+        elseif key == keys.down then
+            INDEX = INDEX + 1
+        elseif key == keys.enter then
+            local amount_selected = options[INDEX]
+            if amount_selected == "Custom" then
+                amount_selected = user_input("Amount >")
+            end
+            return amount_selected
+        elseif key == keys.q then
+            return 0
+        end
+
+        if INDEX <= 0 then
+            INDEX = 1
+        elseif INDEX > #options then
+            INDEX = #options
+        end
+
+        pretty_write(options, INDEX)
+    end
+end
+
+local function grab_item(item_name, amount)
     INPUT_CHEST = TableConcat({ peripheral.find("minecraft:chest")}, {peripheral.find("storagedrawers:controller")})
     OUTPUT_BARREL = peripheral.find("minecraft:barrel")
+
+    local amount_grabbed = tonumber(amount)
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
         for i = 1, #chest_list do
             local item = chest_list[i]
             if item then
                 if item.name == item_name then
-                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i, ITEM_AMOUNT)
+                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i, amount_grabbed)
+                    amount_grabbed = amount_grabbed - item.count
                 end
             end
 
@@ -135,14 +186,15 @@ while true do
     local event, key = os.pullEvent("key")
     if key == keys.i then
         sleep(0.1)
-        local input = user_input()
+        local input = user_input("Search >")
         local list, count = get_item_list()
         list = list_sort(list, input)
 
-        pretty_table(list, 1, count)
-        local item = selector(list, count)
 
-        grab_item(item)
+        local item = selector(list, count)
+        local item_amount = amount_selector(options)
+
+        grab_item(item, item_amount)
 
     elseif key == keys.q then
         sleep(0.1)
