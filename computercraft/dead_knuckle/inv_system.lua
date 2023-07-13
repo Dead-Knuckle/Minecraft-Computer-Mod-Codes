@@ -1,5 +1,5 @@
 local ITEM_AMOUNT = 16
-local options = {"16","32","64","Custom",}
+local options = {"    16    ","    32    ","    64    ","  Custom  ",}
 
 local function printToCenter(content, yoffset)
     local width, height = term.getSize()
@@ -21,17 +21,18 @@ local function pretty_print(strvalue, index)
 end
 
 local function pretty_write(list, INDEX)
+    local last = 0
     term.clear()
     printToCenter("---AMOUNT---\n", 5)
     for i = 1, #list, 1 do
         if i == INDEX then
             term.setBackgroundColor(colors.pink)
         end
-        printToCenter(list[i].. " ", 5-i)
+        printToCenter("|"..list[i].."|", 5-i)
         term.setBackgroundColor(colors.black)
-        LAST = i
+        last = i
     end
-    print("")
+    printToCenter("------------", 5-(last+1))
 end
 
 
@@ -143,7 +144,7 @@ local function amount_selector(options)
             INDEX = INDEX + 1
         elseif key == keys.enter then
             local amount_selected = options[INDEX]
-            if amount_selected == "Custom" then
+            if amount_selected == "  Custom  " then
                 amount_selected = user_input("Amount >")
             end
             return amount_selected
