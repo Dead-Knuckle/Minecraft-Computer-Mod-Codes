@@ -14,7 +14,12 @@ local function pretty_write(namestr, valuestr, color)
     print(valuestr)
     term.setTextColor(colors.white)
 end
-
+function TableConcat(t1,t2)
+    for i=1,#t2 do
+        t1[#t1+1] = t2[i]
+    end
+    return t1
+end
 local function STARTUP_SCREEN()
     term.clear()
     term.setCursorPos(1,1)
@@ -35,7 +40,7 @@ local function user_input()
 end
 
 local function get_item_list()
-    INPUT_CHEST = { peripheral.find("minecraft:chest") }
+    INPUT_CHEST = TableConcat({ peripheral.find("minecraft:chest")}, {peripheral.find("storagedrawers:controller")})
     OUTPUT_BARREL = peripheral.find("minecraft:barrel")
     ITEM_LIST = {}
     ITEM_COUNT = {}
@@ -44,11 +49,14 @@ local function get_item_list()
         local chest_list = chest.list()
         for i = 1, #chest_list do
             local item = chest_list[i]
-            if ITEM_LIST[item.name] then
-                ITEM_LIST[item.name] = ITEM_LIST[item.name] + item.count
-            else
-                ITEM_LIST[item.name] = item.count
+            if item then
+                if ITEM_LIST[item.name] then
+                    ITEM_LIST[item.name] = ITEM_LIST[item.name] + item.count
+                else
+                    ITEM_LIST[item.name] = item.count
+                end
             end
+
         end
     end
     ITEM_COUNT = ITEM_LIST
@@ -103,15 +111,18 @@ local function selector(list, count)
 end
 
 local function grab_item(item_name)
-    INPUT_CHEST = { peripheral.find("minecraft:chest") }
+    INPUT_CHEST = TableConcat({ peripheral.find("minecraft:chest")}, {peripheral.find("storagedrawers:controller")})
     OUTPUT_BARREL = peripheral.find("minecraft:barrel")
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
         for i = 1, #chest_list do
             local item = chest_list[i]
-            if item.name == item_name then
-                OUTPUT_BARREL.pullItems(peripheral.getName(chest), i)
+            if item then
+                if item.name == item_name then
+                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i)
+                end
             end
+
         end
     end
 end
