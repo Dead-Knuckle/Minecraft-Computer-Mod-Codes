@@ -1,5 +1,4 @@
-local ITEM_AMOUNT = 16
-local options = {"    16    ","    32    ","    64    ","  Custom  ",}
+local options = {"    01    ","    16    ","    32    ","    64    ","  Custom  ",}
 
 local function printToCenter(content, yoffset)
     local width, height = term.getSize()
@@ -109,6 +108,9 @@ end
 
 local function selector(list, count)
     local selected_index = 1
+    if next(list) == nil then
+        return false
+    end
     pretty_table(list, 1, count)
     while true do
         local event, key = os.pullEvent("key")
@@ -124,17 +126,24 @@ local function selector(list, count)
         end
 
         if selected_index <= 0 then
-            selected_index = 1
-        elseif selected_index > #list then
             selected_index = #list
+        elseif selected_index > #list then
+            selected_index = 1
         end
 
         pretty_table(list, selected_index, count)
     end
 end
 
-local function amount_selector(options)
+local function amount_selector(options, isRun)
     local INDEX = 1
+    if not isRun then
+        term.clear()
+        term.setCursorPos(1,1)
+        print("Item not found :(")
+        sleep(1)
+        return 0
+    end
     pretty_write(options,  1)
     while true do
         local event, key = os.pullEvent("key")
@@ -153,9 +162,9 @@ local function amount_selector(options)
         end
 
         if INDEX <= 0 then
-            INDEX = 1
-        elseif INDEX > #options then
             INDEX = #options
+        elseif INDEX > #options then
+            INDEX = 1
         end
 
         pretty_write(options, INDEX)
@@ -193,9 +202,11 @@ while true do
 
 
         local item = selector(list, count)
-        local item_amount = amount_selector(options)
+        local item_amount = amount_selector(options, item)
+        if item then
+            grab_item(item, item_amount)
+        end
 
-        grab_item(item, item_amount)
 
     elseif key == keys.q then
         sleep(0.1)
