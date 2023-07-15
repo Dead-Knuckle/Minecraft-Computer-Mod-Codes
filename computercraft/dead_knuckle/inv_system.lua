@@ -1,5 +1,17 @@
 local options = {"    01    ","    16    ","    32    ","    64    ","  Custom  ",}
 
+colors_config = {
+    ["list"] = colors.cyan,
+    ["amount"] = colors.pink,
+    ["default"] = colors.black,
+}
+function TableConcat(t1,t2)
+    for i=1,#t2 do
+        t1[#t1+1] = t2[i]
+    end
+    return t1
+end
+
 local function printToCenter(content, yoffset)
     local width, height = term.getSize()
     local centerX = math.floor(width / 2)
@@ -10,14 +22,6 @@ local function printToCenter(content, yoffset)
 end
 
 
-local function pretty_print(strvalue, index)
-    term.setCursorPos(1, index)
-    term.clearLine()
-    term.setCursorPos(1, index)
-    term.setBackgroundColor(colors.purple)
-    print(strvalue)
-    term.setBackgroundColor(colors.black)
-end
 
 local function pretty_write(list, INDEX)
     local last = 0
@@ -25,22 +29,17 @@ local function pretty_write(list, INDEX)
     printToCenter("---AMOUNT---\n", 5)
     for i = 1, #list, 1 do
         if i == INDEX then
-            term.setBackgroundColor(colors.pink)
+            term.setBackgroundColor(colors_config["amount"])
         end
         printToCenter("|"..list[i].."|", 5-i)
-        term.setBackgroundColor(colors.black)
+        term.setBackgroundColor(colors_config["default"])
         last = i
     end
     printToCenter("------------", 5-(last+1))
 end
 
 
-function TableConcat(t1,t2)
-    for i=1,#t2 do
-        t1[#t1+1] = t2[i]
-    end
-    return t1
-end
+
 local function STARTUP_SCREEN()
     term.clear()
     term.setCursorPos(1,1)
@@ -48,8 +47,10 @@ local function STARTUP_SCREEN()
     print("|     \\.-----.---.-.--|  |    |       |     __|")
     print("|  --  |  -__|  _  |  _  |    |   -   |__     |")
     print("|_____/|_____|___._|_____|____|_______|_______|")
-    print("                        |______|               ")
-
+    io.write("                        |______|             ")
+    term.setTextColor(colors.yellow)
+    print("v.2")
+    term.setTextColor(colors.white)
     print("\nPush \"i\" to input a search term or \"q\" to exit...")
 end
 
@@ -99,7 +100,11 @@ local function pretty_table(list, selected_index, count)
     term.clear()
     for key, value in pairs(list) do
         if key == selected_index then
-            pretty_print(value .. " : "..count[value], selected_index)
+            term.setCursorPos(1, selected_index)
+            term.clearLine()
+            term.setBackgroundColor(colors_config["list"])
+            print(value .. " : "..count[value])
+            term.setBackgroundColor(colors_config["default"])
         else
             print(value .. " : "..count[value])
         end
