@@ -1,9 +1,30 @@
 local need_update = false
 
-FILELINK = ''
+function update(filepath, program)
+    local file_to_update = fs.open(filepath, "w")
+    file_to_update.write(program)
+    file_to_update.close()
+end
 
-FILENAME = ''
+function pretty_print(statement, color)
+    term.setTextColor(color)
+    print(statement)
+    term.setTextColor(colors.white)
+end
 
+
+for i = 1, #arg, 1 do
+    if arg[i] == "-l" or arg[i] == "--link" then
+        FILELINK  = arg[i+1]
+
+elseif arg[i] == "-n" or arg[i] == "--name"  then
+        FILENAME= arg[i+1]
+    end
+end
+
+if FILELINK == nil or FILENAME == nil then
+    error("You need to fill in the args FILELINK and FILENAME", 2)
+end
 
 FILEPATH = shell.resolveProgram(FILENAME)
 
@@ -17,43 +38,23 @@ local local_file = file.readAll()
 file.close()
 
 
-
 if local_file == updated_program then
-    term.setTextColor(colors.lime)
-    print("It appears ".. FILENAME .." the program is up to date")
+    pretty_print("It appears ".. FILENAME .." the program is up to date", colors.lime)
     need_update = false
 else
-    term.setTextColor(colors.red)
-    print("It appears ".. FILENAME .." is not up to date")
+    pretty_print("It appears ".. FILENAME .." is not up to date", colors.red)
     need_update = true
 end
-
-term.setTextColor(colors.white)
-
-
-
-function update(filepath, program)
-    local file_to_update = fs.open(filepath, "w")
-    file_to_update.write(program)
-    file_to_update.close()
-end
-
 
 local update_successful
 
 if need_update then
-    print("Standby...")
+    pretty_print("Standby...", colors.yellow)
     update_successful = pcall(update, FILEPATH, updated_program)
 
-
     if update_successful then
-        term.setTextColor(colors.lime)
-        print("Update successful!")
+        pretty_print("Update successful!", colors.lime)
     else
-        term.setTextColor(colors.red)
-        print("Update failed")
+        pretty_print("Update failed", colors.red)
     end
-    term.setTextColor(colors.white)
 end
-
-
