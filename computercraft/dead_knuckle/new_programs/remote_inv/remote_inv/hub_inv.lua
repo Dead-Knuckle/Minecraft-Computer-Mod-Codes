@@ -1,5 +1,8 @@
 peripheral.find("modem", rednet.open)
 
+
+DEV_MODE = false
+
 function TableConcat(t1,t2)
     for i=1,#t2 do
         t1[#t1+1] = t2[i]
@@ -25,13 +28,11 @@ end
 
 local function get_item_list()
     INPUT_CHEST = TableConcat({ peripheral.find("minecraft:chest")}, {peripheral.find("storagedrawers:controller")})
-    ITEM_LIST = {}
-    ITEM_COUNT = {}
+    ITEM_LIST, ITEM_COUNT = {}, {}
 
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
-        for i = 1, #chest_list do
-            local item = chest_list[i]
+        for key, item in pairs(chest_list) do
             if item then
                 if ITEM_LIST[item.name] then
                     ITEM_LIST[item.name] = ITEM_LIST[item.name] + item.count
@@ -55,16 +56,27 @@ local function grab_item(item_name, amount)
     local amount_grabbed = tonumber(amount)
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
-        for i = 1, #chest_list do
-            local item = chest_list[i]
+        for key, item in pairs(chest_list) do
             if item then
                 if item.name == item_name then
-                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i, amount_grabbed)
+                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), key, amount_grabbed)
                     amount_grabbed = amount_grabbed - item.count
                 end
             end
         end
     end
+end
+
+
+local function get_storage_connected()
+    INPUT_CHEST = TableConcat({ peripheral.find("minecraft:chest")}, {peripheral.find("storagedrawers:controller")})
+    INPUT_CHEST_NAME = {}
+    for i = 1, #INPUT_CHEST, 1 do
+        if INPUT_CHEST[i] then
+            table.insert(INPUT_CHEST_NAME, peripheral.getName(INPUT_CHEST[i]))
+        end
+    end
+    return INPUT_CHEST_NAME
 end
 
 
@@ -101,12 +113,14 @@ while true do
 
     if message == "get_inv" then
         rednet.send(id, {get_item_list()})
+    else if message == "get_sto" and DEV_MODE then
+        rednet.send(id, get_storage_connected())
     else
         grab_item(message[1], message[2])
         last_item = message[1].. ", ".. tonumber(message[2])
         clients_served = clients_served + 1
     end
-
+end
 end
 end
 

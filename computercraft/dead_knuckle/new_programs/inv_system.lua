@@ -69,8 +69,7 @@ local function get_item_list()
 
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
-        for i = 1, #chest_list do
-            local item = chest_list[i]
+        for key, item in pairs(chest_list) do
             if item then
                 if ITEM_LIST[item.name] then
                     ITEM_LIST[item.name] = ITEM_LIST[item.name] + item.count
@@ -183,11 +182,10 @@ local function grab_item(item_name, amount)
     local amount_grabbed = tonumber(amount)
     for _, chest in pairs(INPUT_CHEST) do
         local chest_list = chest.list()
-        for i = 1, #chest_list do
-            local item = chest_list[i]
+        for key, item in pairs(chest_list) do
             if item then
                 if item.name == item_name then
-                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), i, amount_grabbed)
+                    OUTPUT_BARREL.pullItems(peripheral.getName(chest), key, amount_grabbed)
                     amount_grabbed = amount_grabbed - item.count
                 end
             end
