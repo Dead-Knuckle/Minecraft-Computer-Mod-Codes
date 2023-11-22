@@ -1,3 +1,4 @@
+-- ver = 1.0
 local need_update = false
 
 function update(filepath, program)
