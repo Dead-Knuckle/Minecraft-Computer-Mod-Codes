@@ -1,3 +1,4 @@
+-- ver = 1.0
 peripheral.find("modem", rednet.open)
 
 
