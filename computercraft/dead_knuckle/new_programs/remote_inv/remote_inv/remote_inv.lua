@@ -1,3 +1,4 @@
+-- ver = 1.0
 peripheral.find("modem", rednet.open)
 
 local options = {"    01    ","    16    ","    32    ","    64    ","  Custom  ",}
