@@ -1,3 +1,4 @@
+-- ver = 1.0
 local fuel_sources = {
     ["minecraft:coal"] = true,
     ["minecraft:coal_block"] = true,
