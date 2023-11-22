@@ -1,3 +1,4 @@
+-- ver = 1.0
 local scanner = peripheral.find("geoScanner")
 
 
