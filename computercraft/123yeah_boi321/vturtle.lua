@@ -19,22 +19,6 @@ function checkFacing()
 end
 vturtle.facing = checkFacing()
 
-function getTrees()
-	local treelist = {}
-	for x = -4,4 do
-		for z = -4,4 do
-			block = scanner.getBlockMeta(x,0,z)
-			if string.find(block.name,"log") then
-				local temp = {}
-				temp.x = x
-				temp.z = z
-				table.insert(treelist,temp)
-			end
-		end
-	end
-	return treelist
-end
-
 function vturtle.forward()
 	if turtle.getFuelLevel > 0 then
 		turtle.forward()
