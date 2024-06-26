@@ -62,7 +62,7 @@ local function single()
         auto_refuel()
         turtle.dig()
         turtle.forward()
-        bt.dsf_mine(ore_list, blackList_and_fill_blocks)
+        bt.dfs_mine(ore_list, blackList_and_fill_blocks)
     end
 
     for i = 1, 5, 1 do
@@ -71,17 +71,45 @@ local function single()
 end
 
 local function side_branch()
+    local switcher = false
 
+    for branch = 1, 20, 1 do
+        auto_refuel()
+
+        turtle.dig()
+        turtle.forward()
+        bt.dfs_mine(ore_list, blackList_and_fill_blocks)
+        turtle.digUp()
+        turtle.digDown()
+
+        if switcher then
+            turtle.turnLeft()
+        else
+            turtle.turnRight()
+        end
+
+        single()
+
+        if not switcher then
+            turtle.turnLeft()
+        else
+            turtle.turnRight()
+        end
+        switcher = not switcher
+    end
 end
 
 
 local function main_branch()
-
+    --pass
 end
 
 
 
 
 local function main()
-
+    side_branch()
 end
+
+
+main()
